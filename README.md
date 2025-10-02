@@ -26,7 +26,7 @@ A lightweight Node.js REST API for quizzes. Create/manage quizzes, add questions
    ```
 3. Create `.env` in root:
    ```
-   PORT=8080
+   PORT=3000
    MONGODB_URI=mongodb+srv://user:pass@cluster.abcde.mongodb.net/quizdb?retryWrites=true&w=majority
    ```
    - Get URI from [Atlas dashboard](https://cloud.mongodb.com).
@@ -37,11 +37,27 @@ A lightweight Node.js REST API for quizzes. Create/manage quizzes, add questions
    ```
    npm start
    ```
-   - See: "Mongo connected!" + "Quiz API running at http://localhost:8080".
+   - See: "Mongo connected!" + "Quiz API running at http://localhost:3000".
 2. Test with curl/Postman (endpoints below).
 
-## API Endpoints
-Base: `http://localhost:8080/api`
+## 🌐 Live Demo
+Deployed on Render: [https://vertoquizapp.onrender.com](https://vertoquizapp.onrender.com)  
+*(Note: Use POST for submit—GET on `/submit` will error with "Cannot GET". Replace `68de3e1c3eebe231bcc884d3` with your quiz ID for specific quizzes.)*
+
+| Endpoint | Method | Description | Live URL |
+|----------|--------|-------------|----------|
+| Create Quiz | POST | Create a new quiz with title. Body: `{ "title": "Math Quiz" }`. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes) |
+| List All Quizzes | GET | Retrieve all quizzes. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes) |
+| Create Question for Particular Quiz | POST | Add a question to a specific quiz. Body: `{ "text": "2+2?", "options": [{ "text": "4", "isCorrect": true }] }`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions) |
+| View Questions for a Quiz | GET | Fetch questions/options (hides correct answers). | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions) |
+| Submit Answers & Get Score | POST | Submit answers for scoring. Body: `[{ "questionId": "...", "selectedOptionId": "..." }]`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submit](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submit) |
+
+**Sample Data** (from your DB):
+- Quizzes: `[{"id":"68de3e1c3eebe231bcc884d3","title":"Math Basics Quiz"},{"id":"68de9f576d3469bcd0a70c61","title":"Math Basics Quiz"}]`
+- Questions (for ID `68de3e1c3eebe231bcc884d3`): 3 math questions with options (e.g., "What is 2 + 2?" → options "3"/"4").
+
+## 📡 API Endpoints
+Base: `http://localhost:3000/api` (or live URLs above).
 
 - **POST /quizzes**  
   Create: `{ "title": "Math Quiz" }` → `{ "id": "...", "title": "..." }`
@@ -58,10 +74,10 @@ Base: `http://localhost:8080/api`
 - **POST /quizzes/:quizId/submit**  
   Score: `[{ "questionId": "...", "selectedOptionId": "..." }]` → `{ "score": 1, "total": 1 }`
 
-**Quick Flow** (curl):
+**Quick Flow** (curl, adapt for live):
 ```
 # Create quiz
-curl -X POST http://localhost:8080/api/quizzes -H "Content-Type: application/json" -d '{"title":"Test"}'
+curl -X POST http://localhost:3000/api/quizzes -H "Content-Type: application/json" -d '{"title":"Test"}'
 
 # Add question (use quiz ID)
 # Then fetch, submit with IDs from response
@@ -86,9 +102,3 @@ quiz-app/
 ├── .env              # Config
 └── package.json
 ```
-
-## Deployment
-- Push to GitHub.
-- Use Vercel/Heroku: Set `MONGODB_URI` in dashboard.
-- Vercel: Connect repo, add env var → live in minutes.
-
