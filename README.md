@@ -56,32 +56,35 @@ Deployed on Render: [https://vertoquizapp.onrender.com](https://vertoquizapp.onr
 - Quizzes: `[{"id":"68de3e1c3eebe231bcc884d3","title":"Math Basics Quiz"},{"id":"68de9f576d3469bcd0a70c61","title":"Math Basics Quiz"}]`
 - Questions (for ID `68de3e1c3eebe231bcc884d3`): 3 math questions with options (e.g., "What is 2 + 2?" → options "3"/"4").
 
-## 📡 API Endpoints
-Base: `http://localhost:3000/api` (or live URLs above).
+# 1. Create quiz
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes \
+-H "Content-Type: application/json" \
+-d '{"title":"Test"}'
 
-- **POST /quizzes**  
-  Create: `{ "title": "Math Quiz" }` → `{ "id": "...", "title": "..." }`
+# 2.ListQuiz
+curl https://vertoquizapp.onrender.com/api/quizzes
 
-- **GET /quizzes**  
-  List: → `[{ "id": "...", "title": "..." }]`
+# 3. Add question (replace <quizId> with ID from previous step)
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions \
+-H "Content-Type: application/json" \
+-d '{
+  "text": "What is 5 * 3?",
+  "options": [
+    { "text": "15", "isCorrect": true },
+    { "text": "12", "isCorrect": false }
+  ]
+}'
 
-- **POST /quizzes/:quizId/questions**  
-  Add: `{ "text": "2+2?", "options": [{ "text": "4", "isCorrect": true }] }` → `{ "id": "..." }`
+# 4. Fetch questions
+curl https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions
 
-- **GET /quizzes/:quizId/questions**  
-  Fetch (no corrects): → `[{ "id": "...", "text": "...", "options": [{ "id": "...", "text": "..." }] }]`
+# 5. Submit answers (replace IDs from fetch response)
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/submit \
+-H "Content-Type: application/json" \
+-d '[
+  { "questionId": "<questionId>", "selectedOptionId": "<optionId>" }
+]'
 
-- **POST /quizzes/:quizId/submit**  
-  Score: `[{ "questionId": "...", "selectedOptionId": "..." }]` → `{ "score": 1, "total": 1 }`
-
-**Quick Flow** (curl, adapt for live):
-```
-# Create quiz
-curl -X POST http://localhost:3000/api/quizzes -H "Content-Type: application/json" -d '{"title":"Test"}'
-
-# Add question (use quiz ID)
-# Then fetch, submit with IDs from response
-```
 
 Errors: 400/404/500 with JSON messages.
 
