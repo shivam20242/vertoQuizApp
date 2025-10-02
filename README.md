@@ -57,14 +57,18 @@ Deployed on Render: [https://vertoquizapp.onrender.com](https://vertoquizapp.onr
 - Questions (for ID `68de3e1c3eebe231bcc884d3`): 3 math questions with options (e.g., "What is 2 + 2?" → options "3"/"4").
 
 # 1. Create quiz
+```
 curl -X POST https://vertoquizapp.onrender.com/api/quizzes \
 -H "Content-Type: application/json" \
 -d '{"title":"Test"}'
-
+```
 # 2.ListQuiz
+```
 curl https://vertoquizapp.onrender.com/api/quizzes
+```
 
 # 3. Add question (replace <quizId> with ID from previous step)
+```
 curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions \
 -H "Content-Type: application/json" \
 -d '{
@@ -74,17 +78,19 @@ curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions \
     { "text": "12", "isCorrect": false }
   ]
 }'
-
+```
 # 4. Fetch questions
+```
 curl https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions
-
+```
 # 5. Submit answers (replace IDs from fetch response)
+```
 curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/submit \
 -H "Content-Type: application/json" \
 -d '[
   { "questionId": "<questionId>", "selectedOptionId": "<optionId>" }
 ]'
-
+```
 
 Errors: 400/404/500 with JSON messages.
 
