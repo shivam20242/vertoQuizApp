@@ -3,12 +3,12 @@ import { createQuiz, listQuizzes, addQuestion, getQuizQuestions, submitAnswers }
 
 const router = express.Router();
 
-router.post('/', createQuiz);  // Create quiz
-router.get('/', listQuizzes);  // List quizzes (bonus)
+router.post('/createQuiz', createQuiz);  // Create quiz
+router.get('/listQuiz', listQuizzes);  // List quizzes (bonus)
 
-router.post('/:quizId/questions', addQuestion);  // Add question
-router.get('/:quizId/questions', getQuizQuestions);  // Get questions
+router.post('/:quizId/addQuestions', addQuestion);  // Add question
+router.get('/:quizId/getQuestions', getQuizQuestions);  // Get questions
 
-router.post('/:quizId/submit', submitAnswers);  // Submit
+router.post('/:quizId/submitAnswer', submitAnswers);  // Submit
 
 export default router;
