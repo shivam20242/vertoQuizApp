@@ -46,11 +46,11 @@ Deployed on Render: [https://vertoquizapp.onrender.com](https://vertoquizapp.onr
 
 | Endpoint | Method | Description | Live URL |
 |----------|--------|-------------|----------|
-| Create Quiz | POST | Create a new quiz with title. Body: `{ "title": "Math Quiz" }`. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes) |
-| List All Quizzes | GET | Retrieve all quizzes. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes) |
-| Create Question for Particular Quiz | POST | Add a question to a specific quiz. Body: `{ "text": "2+2?", "options": [{ "text": "4", "isCorrect": true }] }`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions) |
-| View Questions for a Quiz | GET | Fetch questions/options (hides correct answers). | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions) |
-| Submit Answers & Get Score | POST | Submit answers for scoring. Body: `[{ "questionId": "...", "selectedOptionId": "..." }]`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submit](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submit) |
+| Create Quiz | POST | Create a new quiz with title. Body: `{ "title": "Math Quiz" }`. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes/createQuiz) |
+| List All Quizzes | GET | Retrieve all quizzes. | [https://vertoquizapp.onrender.com/api/quizzes](https://vertoquizapp.onrender.com/api/quizzes/listQuiz) |
+| Create Question for Particular Quiz | POST | Add a question to a specific quiz. Body: `{ "text": "2+2?", "options": [{ "text": "4", "isCorrect": true }] }`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions/addQuestions) |
+| View Questions for a Quiz | GET | Fetch questions/options (hides correct answers). | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/questions/getQuestions) |
+| Submit Answers & Get Score | POST | Submit answers for scoring. Body: `[{ "questionId": "...", "selectedOptionId": "..." }]`. | [https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submit](https://vertoquizapp.onrender.com/api/quizzes/68de3e1c3eebe231bcc884d3/submitAnswer) |
 
 **Sample Data** (from your DB):
 - Quizzes: `[{"id":"68de3e1c3eebe231bcc884d3","title":"Math Basics Quiz"},{"id":"68de9f576d3469bcd0a70c61","title":"Math Basics Quiz"}]`
@@ -58,18 +58,18 @@ Deployed on Render: [https://vertoquizapp.onrender.com](https://vertoquizapp.onr
 
 # 1. Create quiz
 ```
-curl -X POST https://vertoquizapp.onrender.com/api/quizzes \
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes/createQuiz \
 -H "Content-Type: application/json" \
 -d '{"title":"Test"}'
 ```
 # 2.ListQuiz
 ```
-curl https://vertoquizapp.onrender.com/api/quizzes
+curl https://vertoquizapp.onrender.com/api/quizzes/listQuizzes
 ```
 
 # 3. Add question (replace <quizId> with ID from previous step)
 ```
-curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions \
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions/addQuestion \
 -H "Content-Type: application/json" \
 -d '{
   "text": "What is 5 * 3?",
@@ -81,11 +81,11 @@ curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions \
 ```
 # 4. Fetch questions
 ```
-curl https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions
+curl https://vertoquizapp.onrender.com/api/quizzes/<quizId>/questions/getQuestions
 ```
 # 5. Submit answers (replace IDs from fetch response)
 ```
-curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/submit \
+curl -X POST https://vertoquizapp.onrender.com/api/quizzes/<quizId>/submitAnswers \
 -H "Content-Type: application/json" \
 -d '[
   { "questionId": "<questionId>", "selectedOptionId": "<optionId>" }
